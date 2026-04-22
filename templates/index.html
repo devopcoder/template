@@ -1,117 +1,289 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>FB Mass Messenger</title>
-    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 FB Mass Messenger v3</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial; background: #1a1a2e; color: #fff; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: #16213e; padding: 30px; border-radius: 15px; }
-        h1 { text-align: center; color: #00d4ff; margin-bottom: 30px; }
-        .section { margin-bottom: 30px; padding: 20px; background: #0f3460; border-radius: 10px; }
-        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 8px; background: #333; color: #fff; }
-        button { width: 100%; padding: 15px; background: #00d4ff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin: 10px 0; }
-        button:hover { background: #00b8d4; }
-        button.danger { background: #ff4757; color: #fff; }
-        .status { padding: 15px; border-radius: 8px; margin: 10px 0; }
-        .success { background: #2ed573; }
-        .error { background: #ff4757; }
-        .group-list { max-height: 300px; overflow-y: auto; }
-        .group-item { padding: 10px; background: #533483; margin: 5px 0; border-radius: 5px; cursor: pointer; display: flex; align-items: center; }
-        .group-item input[type="checkbox"] { margin-right: 10px; transform: scale(1.5); }
-        .progress { width: 100%; height: 20px; background: #333; border-radius: 10px; overflow: hidden; margin: 10px 0; }
-        .progress-bar { height: 100%; background: #00d4ff; width: 0%; transition: width 0.3s; }
-        #log { background: #000; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 700px; 
+            margin: 0 auto; 
+            background: rgba(255,255,255,0.1); 
+            backdrop-filter: blur(20px); 
+            border-radius: 20px; 
+            padding: 30px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+        }
+        h1 { 
+            text-align: center; 
+            color: white; 
+            margin-bottom: 30px; 
+            font-size: 2.2em; 
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3); 
+        }
+        .section { 
+            background: rgba(255,255,255,0.1); 
+            margin-bottom: 25px; 
+            padding: 25px; 
+            border-radius: 15px; 
+            backdrop-filter: blur(10px); 
+        }
+        input, textarea, select { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border: none; 
+            border-radius: 12px; 
+            background: rgba(255,255,255,0.9); 
+            color: #333; 
+            font-size: 16px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+        }
+        button { 
+            width: 100%; 
+            padding: 18px; 
+            background: linear-gradient(45deg, #00d4ff, #0099cc); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            box-shadow: 0 8px 25px rgba(0,212,255,0.4); 
+        }
+        button:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(0,212,255,0.6); }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .danger { background: linear-gradient(45deg, #ff6b6b, #ee5a52) !important; }
+        .status { 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin: 15px 0; 
+            font-weight: bold; 
+            text-align: center; 
+        }
+        .success { background: rgba(46, 213, 115, 0.3); color: #2ed573; }
+        .error { background: rgba(255, 71, 87, 0.3); color: #ff4757; }
+        .group-list { 
+            max-height: 350px; 
+            overflow-y: auto; 
+            margin-top: 15px; 
+        }
+        .group-item { 
+            display: flex; 
+            align-items: center; 
+            padding: 15px; 
+            background: rgba(255,255,255,0.1); 
+            margin: 8px 0; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+        }
+        .group-item:hover { background: rgba(255,255,255,0.2); transform: translateX(5px); }
+        .group-item input[type="checkbox"] { 
+            width: 20px; 
+            height: 20px; 
+            margin-right: 15px; 
+            transform: scale(1.3); 
+            accent-color: #00d4ff; 
+        }
+        .progress { 
+            width: 100%; 
+            height: 12px; 
+            background: rgba(255,255,255,0.2); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin: 15px 0; 
+        }
+        .progress-bar { 
+            height: 100%; 
+            background: linear-gradient(90deg, #00d4ff, #2ed573); 
+            width: 0%; 
+            transition: width 0.4s ease; 
+            box-shadow: 0 0 20px rgba(0,212,255,0.5); 
+        }
+        #log { 
+            background: rgba(0,0,0,0.4); 
+            color: #00ff88; 
+            padding: 20px; 
+            border-radius: 12px; 
+            font-family: 'Courier New', monospace; 
+            font-size: 14px; 
+            max-height: 250px; 
+            overflow-y: auto; 
+            white-space: pre-wrap; 
+            line-height: 1.5; 
+        }
+        @media (max-width: 600px) { 
+            .container { padding: 20px; margin: 10px; } 
+            h1 { font-size: 1.8em; } 
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 FB Mass Messenger</h1>
+        <h1>🚀 FB Mass Messenger v3.0</h1>
         
         {% if not logged_in %}
         <div class="section">
-            <h3>1️⃣ LOGIN (Paste Cookies)</h3>
+            <h3>🔑 1. LOGIN (Browser Cookies)</h3>
             <form id="loginForm">
-                <input type="text" id="c_user" placeholder="c_user cookie" required>
-                <input type="text" id="xs" placeholder="xs cookie" required>
-                <input type="text" id="fr" placeholder="fr cookie (optional)">
-                <input type="text" id="sb" placeholder="sb cookie (optional)">
-                <button type="submit">🔑 LOGIN</button>
+                <input type="text" name="c_user" placeholder="c_user (e.g. 1000123456789)" required>
+                <input type="text" name="xs" placeholder="xs (e.g. 32:ABC...)" required>
+                <input type="text" name="fr" placeholder="fr (optional)">
+                <input type="text" name="sb" placeholder="sb (optional)">
+                <button type="submit">🔐 LOGIN & LOAD GROUPS</button>
             </form>
+            <div id="loginStatus"></div>
         </div>
         {% else %}
-        <div class="status success">✅ Logged in successfully!</div>
+        <div class="status success">{{ status_message }}</div>
         {% endif %}
 
-        {% if logged_in %}
+        {% if logged_in and groups %}
         <div class="section">
-            <h3>2️⃣ SELECT GROUPS</h3>
+            <h3>👥 2. SELECT GROUPS ({{ groups|length }} found)</h3>
             <div class="group-list" id="groupList">
                 {% for group in groups %}
                 <div class="group-item">
-                    <input type="checkbox" value="{{ group.id }}" checked>
-                    <span>{{ group.name }}</span>
+                    <input type="checkbox" value="{{ group.id }}" checked data-name="{{ group.name }}">
+                    <span>{{ group.name }} ({{ group.participant_count }} members)</span>
                 </div>
                 {% endfor %}
             </div>
+            <button onclick="selectAll(true)">✅ Select All</button>
+            <button onclick="selectAll(false)">❌ Deselect All</button>
         </div>
 
         <div class="section">
-            <h3>3️⃣ CUSTOM MESSAGE</h3>
-            <textarea id="customMessage" rows="4" placeholder="Enter your message here...">Hello everyone! 👋</textarea>
+            <h3>✉️ 3. CUSTOM MESSAGE</h3>
+            <textarea id="customMessage" rows="4" placeholder="Your message will be sent to ALL selected groups with 3s delays...">Hello everyone! 👋 Mass message test</textarea>
         </div>
 
         <div class="section">
-            <h3>4️⃣ MASS SEND</h3>
-            <button onclick="startMassSend()" id="massSendBtn">🚀 START MASS MESSAGING</button>
+            <h3>🚀 4. MASS SEND (3s anti-detection delay)</h3>
+            <button id="massSendBtn" onclick="startMassSend()">🎯 START MASS MESSAGING</button>
             <div class="progress">
                 <div class="progress-bar" id="progressBar"></div>
             </div>
-            <button class="danger" onclick="logout()">🚪 LOGOUT</button>
+            <div id="sendStatus"></div>
         </div>
+        {% endif %}
 
         <div class="section">
-            <h3>📊 LOG</h3>
-            <div id="log"></div>
+            <h3>📊 LIVE LOG</h3>
+            <div id="log">Server started at {{ 'now' | strftime }}...\nWaiting for actions...\n</div>
+        </div>
+
+        {% if logged_in %}
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="danger" onclick="logout()">🚪 LOGOUT</button>
         </div>
         {% endif %}
     </div>
 
     <script>
-        const log = msg => {
-            document.getElementById('log').textContent += `[${new Date().toLocaleTimeString()}] ${msg}\n`;
-            document.getElementById('log').scrollTop = document.getElementById('log').scrollHeight;
+        const log = (msg) => {
+            const logEl = document.getElementById('log');
+            logEl.textContent += `[${new Date().toLocaleTimeString()}] ${msg}\n`;
+            logEl.scrollTop = logEl.scrollHeight;
         };
 
         // Login
-        document.getElementById('loginForm')?.addEventListener('submit', async e => {
+        document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
+            const statusEl = document.getElementById('loginStatus');
             
-            const res = await fetch('/login', {
-                method: 'POST',
-                body: new URLSearchParams(data)
-            });
-            const result = await res.json();
+            statusEl.innerHTML = '<div class="status">⏳ Testing login...</div>';
             
-            if (result.success) {
-                log('✅ Login successful!');
-                location.reload();
-            } else {
-                log(`❌ ${result.message}`);
+            try {
+                const res = await fetch('/login', { method: 'POST', body: formData });
+                const result = await res.json();
+                
+                if (result.success) {
+                    statusEl.innerHTML = `<div class="status success">${result.message}</div>`;
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    statusEl.innerHTML = `<div class="status error">${result.message}</div>`;
+                }
+            } catch (e) {
+                statusEl.innerHTML = `<div class="status error">Network error: ${e.message}</div>`;
             }
         });
 
+        // Group selection
+        function selectAll(all) {
+            document.querySelectorAll('.group-item input[type="checkbox"]').forEach(cb => {
+                cb.checked = all;
+            });
+        }
+
         // Mass send
         async function startMassSend() {
-            const groups = Array.from(document.querySelectorAll('.group-item input:checked')).map(cb => cb.value);
-            const message = document.getElementById('customMessage').value;
+            const groups = Array.from(document.querySelectorAll('#groupList input:checked')).map(cb => ({
+                id: cb.value,
+                name: cb.dataset.name
+            }));
+            const message = document.getElementById('customMessage').value.trim();
             
-            if (!groups.length || !message) {
-                log('❌ Select groups and enter message!');
+            if (groups.length === 0) {
+                log('❌ No groups selected!');
                 return;
             }
+            if (!message) {
+                log('❌ Enter a message!');
+                return;
+            }
+
+            const btn = document.getElementById('massSendBtn');
+            const progress = document.getElementById('progressBar');
+            const status = document.getElementById('sendStatus');
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ SENDING...';
+            progress.style.width = '0%';
+            
+            log(`🚀 Starting mass send: ${groups.length} groups`);
+            
+            try {
+                const res = await fetch('/send_mass', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ groups: groups.map(g => g.id), message })
+                });
+                
+                const result = await res.json();
+                log(`✅ COMPLETE: ${result.summary}`);
+                
+                progress.style.width = '100%';
+                status.innerHTML = `<div class="status success">🎉 ${result.summary}</div>`;
+                
+            } catch (e) {
+                log(`❌ Error: ${e.message}`);
+                status.innerHTML = `<div class="status error">Failed: ${e.message}</div>`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🎯 START MASS MESSAGING';
+                setTimeout(() => progress.style.width = '0%', 3000);
+            }
+        }
+
+        // Logout
+        async function logout() {
+            await fetch('/logout');
+            location.reload();
+        }
+    </script>
+</body>
+</html>            }
 
             const btn = document.getElementById('massSendBtn');
             btn.disabled = true;
